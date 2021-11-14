@@ -24,6 +24,7 @@ void signal_FPE(int n)
 
 int main(int argc, char **argv)
 {
+#ifndef EMSCRIPTEN
 #if defined(__linux__) || (defined(__APPLE__) && defined(__MACH__))
     //Lower the process priority on linux and mac. On windows this is done on process creation from the GUI.
     setpriority(PRIO_PROCESS, 0, 10);
@@ -36,6 +37,6 @@ int main(int argc, char **argv)
     std::cerr << std::boolalpha;
 
     cura::Application::getInstance().run(argc, argv);
-
+#endif
     return 0;
 }

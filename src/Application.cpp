@@ -12,6 +12,8 @@
 #include "progress/Progress.h"
 #include "utils/logoutput.h"
 #include "utils/string.h" //For stringcasecompare.
+#include <stdio.h>
+
 
 namespace cura
 {
@@ -163,7 +165,6 @@ void Application::slice()
     {
         arguments.emplace_back(argv[argument_index]);
     }
-
     communication = new CommandLine(arguments);
 }
 
@@ -177,6 +178,7 @@ void Application::run(const size_t argc, char** argv)
 
     if (argc < 2)
     {
+        std::cout << "big sadd\n";
         printHelp();
         exit(1);
     }

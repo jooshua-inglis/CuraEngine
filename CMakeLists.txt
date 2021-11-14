@@ -13,6 +13,13 @@ if (MSVC)
     option(MSVC_STATIC_RUNTIME "Link the MSVC runtime statically" OFF)
 endif()
 
+if(EMSCRIPTEN)
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s EXPORTED_FUNCTIONS=\'[\"_slice_js\",\"_main\"]\'")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s EXPORTED_RUNTIME_METHODS=\'[\"ccall\",\"cwrap\",\"FS\",\"MEMFS\"]\'")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -O1 -s ENVIRONMENT=worker -s MODULARIZE=1 -s EXPORT_NAME=\"createWasmModule\" -s FILESYSTEM=1")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -o CuraEngine.wasm")
+endif()
+
 if(ENABLE_ARCUS)
     message(STATUS "Building with Arcus")
     # We want to have access to protobuf_generate_cpp and other FindProtobuf features.
@@ -131,6 +138,7 @@ else()
 endif()
 
 set(engine_SRCS # Except main.cpp.
+    src/CuraWeb.cpp
     src/Application.cpp
     src/bridge.cpp
     src/ConicalOverhang.cpp
